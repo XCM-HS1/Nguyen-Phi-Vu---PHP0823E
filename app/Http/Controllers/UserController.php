@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\RegisterMail;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Review;
 use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -32,8 +33,60 @@ class UserController extends Controller
     public function purchaseHistory(User $user)
     {
         $order_data = Order::where('user_id', '=', $user->id)->get();
-        // dd($order_detail);
+        // dd($order_data);
+
         return view('client.profile.client-purchase-history', compact('user', 'order_data'));
+    }
+
+    public function ratingIndex()
+    {
+        $user_data = User::where('id', '=', Auth::user()->id)->get();
+        $order_data = Order::where('user_id', '=', Auth::user()->id)->get();
+        foreach($order_data as $data){}
+        return view('client.profile.client-rating', compact('user_data', 'data'));
+    }
+
+    public function rating (Request $request)
+    {
+        $order_data = DB::table('fixed_order_detail')->where('user_id', '=', Auth::user()->id)->get();
+        foreach($order_data as $data){
+            // dd($data);
+            $review['user_id'] = Auth::user()->id;
+            $review['user_name'] = Auth::user()->name;
+            $review['order_id'] = $data->order_id;
+            $review['product_id'] = $data->product_id;
+            $review['product_name'] = $data->products;
+            $review['review'] = $request->review;
+            $review['rating'] = $request->rating;
+            if($request->hasFile('image')) {
+                $path = $request->file('image')->store();
+                $review['image'] = $path;
+            }
+            $review['status'] = 1;
+            $review['created_at'] = now();
+            $review['updated_at'] = now();
+        }
+
+        if(DB::table('reviews')->insert($review)){
+            return redirect()->route('client.home')->with('success', 'You have successfully rated an item! Please return to rate another item!');
+        }
+        else{
+            return redirect()->route('client.home')->with('error', 'Something went wrong, please try again later!');
+        }
+
+    }
+
+    public function viewRating ($id)
+    {
+        $user_data = User::where('id', '=', Auth::user()->id)->get();
+        $order_data = Order::where('user_id', '=', Auth::user()->id)->get();
+        $view_data = DB::table('reviews')->where('user_id', '=', Auth::user()->id)->where('product_id', '=', $id)->get();
+        foreach($view_data as $data){
+            $fixed_data = DB::table('fixed_order_detail')->where('user_id', '=', Auth::user()->id)->where('order_id', '=', $data->order_id)->where('product_id', '=', $id)->get();
+            // dd($fixed);
+        }
+
+        return view('client.profile.client-rating-view', compact('user_data', 'order_data', 'view_data', 'fixed_data'));
     }
 
     public function orderDetail ($id)
@@ -42,13 +95,22 @@ class UserController extends Controller
 
         $orders = DB::table('orders')->where('id', '=', $id)->get();
         // dd($orders);
-        foreach($orders as $data){
-            // dd($data);
-            $order_detail = DB::table('fixed_order_detail')->where('order_id', '=', $data->id)->get();
+        foreach($orders as $data1){
+            // dd($data1);
+            $order_detail = DB::table('fixed_order_detail')->where('order_id', '=', $data1->id)->get();
             // dd($order_detail);
+            foreach($order_detail as $order_detail_data){
+                $review_data = Review::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $order_detail_data->product_id)->get();
+                // dd($review_data);
+            }
         }
 
-        return view('client.profile.client-order-detail', compact('orders', 'order_detail', 'user_data'));
+        return view('client.profile.client-order-detail', compact('orders', 'order_detail', 'user_data', 'review_data', 'data1'));
+    }
+
+    public function received ()
+    {
+
     }
 
     public function changePassword(Request $request, User $user)

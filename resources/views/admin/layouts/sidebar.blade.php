@@ -148,14 +148,19 @@
 
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-layout"></i>
-          <div data-i18n="Layouts">Client Message</div>
+          <i class="menu-icon tf-icons bx bx-send"></i>
+          <div data-i18n="Layouts">Client Send</div>
         </a>
 
         <ul class="menu-sub">
           <li class="menu-item">
             <a href="{{ route('admin.message.index') }}" class="menu-link">
-              <div>Request</div>
+              <div>Message</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('admin.review.index') }}" class="menu-link">
+              <div>Review</div>
             </a>
           </li>
         </ul>

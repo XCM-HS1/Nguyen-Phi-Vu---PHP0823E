@@ -71,6 +71,8 @@ class CheckoutController extends Controller
             $order_detail['created_at'] = now();
             $order_detail['updated_at'] = now();
 
+            $fixed['user_id'] = Auth::user()->id;
+            $fixed['user_name'] = Auth::user()->name;
             $fixed['order_id'] = $order_id;
             $fixed['product_id'] = $item->id;
             $fixed['products'] = $item->name;
@@ -80,8 +82,11 @@ class CheckoutController extends Controller
             $fixed['created_at'] = now();
             $fixed['updated_at'] = now();
 
+            $review['status'] = 0;
+
             DB::table('order_detail')->insert($order_detail);
             DB::table('fixed_order_detail')->insert($fixed);
+            DB::table('reviews')->insert($review);
 
             $mail_order = [
                 'user_name' => $request->name,

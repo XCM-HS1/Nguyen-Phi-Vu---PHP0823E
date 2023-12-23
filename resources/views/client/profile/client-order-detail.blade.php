@@ -57,7 +57,15 @@
                   </ul>
                   @endforeach
                   <div class="card">
-                    <h5 class="card-header">Order Detail</h5>
+                    <h5 class="card-header">Order Detail
+                        @if($data1->status == 0)
+                        <span class="badge bg-primary">Processing</span>
+                        @elseif($data1->status == 1)
+                        <span class="badge bg-warning">On Delivery</span>
+                        @else
+                        <span class="badge bg-success">Completed</span>
+                        @endif
+                    </h5>
                     <div class="card-body">
                     <div class="table-responsive">
                       <table class="table table-bordered border-bottom">
@@ -68,6 +76,10 @@
                             <th>Products</th>
                             <th>Quantity</th>
                             <th>Price</th>
+                            @if($data1->status == 2)
+                            <th>Status</th>
+                            <th>Rating/View</th>
+                            @endif
                           </tr>
                         </thead>
 
@@ -76,19 +88,59 @@
                                 @foreach($order_detail as $key => $item)
                                 <td> {{++$key}} </td>
                                 <td> {{$item->order_id}} </td>
-                                <td class="inline-block">
+                                <td>
                                     <img src="{{ asset('storage/' . $item->image)}}" style="width: 80px">
                                     <p> {{$item->products}} </p>
                                 </td>
                                 <td> {{$item->quantity}} </td>
                                 <td> {{$item->price}} </td>
+                                @if($data1->status == 2)
+                                @foreach($review_data as $data)
+                                <td>
+                                    @if($data->status == 0)
+                                    <span class="badge rounded-pill bg-danger">Not Rated</span>
+                                    @else
+                                    <span class="badge rounded-pill bg-success">Rated</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($data->status == 0)
+                                    <a href="{{ route('user.rating') }}">
+                                        <button type="button" class="btn btn-warning btn-sm">
+                                            <i class="fa-solid fa-award"></i>
+                                        </button>
+                                    </a>
+                                    @else
+                                    <a href="{{ route('user.view.rating', ['id' => $item->product_id]) }}">
+                                        <button type="button" class="btn btn-info btn-sm">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </a>
+                                    @endif
+                                </td>
+                                @endforeach
+                                @endif
                                 @endforeach
                             </tr>
                         </tbody>
                       </table>
                     </div>
                     <div class="mb-3 mt-4 col-md-12">
-                        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Back</button>
+                    @foreach($user_data as $user1)
+                        @if($data1->status == 2)
+                        <form action="{{ route('user.receive.order') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-info">I have received the order!</button>
+                            <a href="{{route('user.purchase.history', $user1->id)}}">
+                                <button type="button" class="btn btn-outline-secondary">Back</button>
+                            </a>
+                        </form>
+                        @else
+                        <a href="{{route('user.purchase.history', $user1->id)}}">
+                            <button type="button" class="btn btn-outline-secondary">Back</button>
+                        </a>
+                        @endif
+                    @endforeach
                     </div>
                   </div>
                 </div>

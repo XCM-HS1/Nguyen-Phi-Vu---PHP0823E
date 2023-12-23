@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,9 +66,17 @@ class ShopController extends Controller
         }
 
         $products = Product::where('slug', $slug)->get();
+        foreach($products as $product){
+            $review_data = Review::where('product_id', '=', $product->id)->get();
+            $review_count = $review_data->count();
+
+            $rating_avg = Review::where('product_id', '=', $product->id)->avg('rating');
+            $rating_avg = number_format($rating_avg, 1);
+        }
+
         $rProducts = Product::where('slug', '!=', $slug)->inRandomOrder('id')->get()->take(4);
 
-        return view('client.product-detail', compact('products', 'rProducts', 'categories_data', 'wishlistAuth', 'user_data'));
+        return view('client.product-detail', compact('products', 'rProducts', 'categories_data', 'wishlistAuth', 'user_data', 'review_count', 'rating_avg', 'review_data'));
     }
 
     public function category ($slug)

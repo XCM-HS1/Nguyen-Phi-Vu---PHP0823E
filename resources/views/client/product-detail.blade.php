@@ -165,7 +165,7 @@
                             <img class="product__details__pic__item--large"
                                 src="{{ asset('storage/' . $product->image)}}" alt="">
                         </div>
-                        <div class="product__details__pic__slider owl-carousel">
+                        {{-- <div class="product__details__pic__slider owl-carousel">
                             <img data-imgbigurl="{{ asset('client-theme/img/product/details/product-details-2.jpg') }}"
                                 src="{{ asset('client-theme/img/product/details/thumb-1.jpg') }}" alt="">
                             <img data-imgbigurl="{{ asset('client-theme/img/product/details/product-details-3.jpg') }}"
@@ -174,20 +174,82 @@
                                 src="{{ asset('client-theme/img/product/details/thumb-3.jpg') }}" alt="">
                             <img data-imgbigurl="{{ asset('client-theme/img/product/details/product-details-4.jpg') }}"
                                 src="{{ asset('client-theme/img/product/details/thumb-4.jpg') }}" alt="">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3>{{ $product->product_name }}</h3>
                         <div class="product__details__rating') }}">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                            <span>(18 reviews)</span>
+                            @if($rating_avg >= 0.5 && $rating_avg < 1)
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 1 && $rating_avg < 1.5)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 1.5 && $rating_avg < 2)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 2 && $rating_avg < 2.5)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 2.5 && $rating_avg < 3)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 3 && $rating_avg < 3.5)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 3.5 && $rating_avg < 4)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 4 && $rating_avg < 4.5)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            @elseif($rating_avg >= 4.5 && $rating_avg < 5)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            @elseif($rating_avg == 5)
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            @endif
+
+                            @if($review_count <= 1)
+                            <span> ({{$review_count}} review) </span>
+                            @else
+                            <span> ({{$review_count}} reviews) </span>
+                            @endif
                         </div>
+
                         <div class="product__details__price">${{ $product->price }}</div>
 
                         @if($product->availability >= 1)
@@ -241,7 +303,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                                    aria-selected="false">Reviews <span>(1)</span></a>
+                                    aria-selected="false">Reviews <span>({{$review_count}})</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -252,21 +314,92 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                @foreach($review_data as $data)
+                                @if($data->status == 2)
                                 <div class="product__details__tab__desc">
-                                    <h6>Products Reviews</h6>
-                                    <fieldset class="rating">
-                                        <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-                                        <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                                        <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-                                        <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                                        <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-                                        <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                                        <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-                                        <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                                        <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-                                        <input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-                                    </fieldset>
+                                    <h6>{{$data->user_name}} ({{$data->created_at->format('m/d/Y')}})</h6>
+
+                                    <div>
+                                        @switch($data->rating)
+                                            @case(0.5)
+                                                <i class="fa-solid fa-star-half-stroke" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(1)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(1.5)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star-half-stroke" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(2)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(2.5)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star-half-stroke" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(3)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(3.5)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star-half-stroke" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(4)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-regular fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                            @case(4.5)
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star-half-stroke" style="color: #e9d60c;"></i>
+                                                @break
+                                            @default
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                <i class="fa-solid fa-star" style="color: #e9d60c;"></i>
+                                                @break
+                                        @endswitch
+                                    </div>
+
+                                    <div>
+                                        <pre> {{$data->review}} </pre>
+                                    </div>
                                 </div>
+                                @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -334,7 +467,6 @@
 
     <!-- Js Plugins -->
     @include('client.layouts.js')
-
 
 </body>
 </html>

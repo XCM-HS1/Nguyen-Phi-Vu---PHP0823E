@@ -71,6 +71,10 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('home/user/security/change-password', 'UserController@changePassword')->name('user.change.password');
     Route::get('home/user/purchase-history/{user}', 'UserController@purchaseHistory')->name('user.purchase.history');
     Route::get('home/user/purchase-history/detail/{id}', 'UserController@orderDetail')->name('user.order_detail');
+    Route::get('home/user/profile/rating', 'UserController@ratingIndex')->name('user.rating');
+    Route::post('home/user/profile/rating', 'UserController@rating')->name('user.pRating');
+    Route::get('home/user/profile/rating/view/{id}', 'UserController@viewRating')->name('user.view.rating');
+    Route::post('home/user/order/complete', 'UserController@received')->name('user.receive.order');
 });
 
 
@@ -86,6 +90,7 @@ Route::group(['prefix' => '/admin/', 'namespace' => 'Admin', 'as' => 'admin.', '
     Route::resource('blog', 'BlogController');
     Route::resource('order', 'OrderController');
     Route::resource('category', 'CategoryController');
+    Route::resource('review', 'ReviewController');
 });
 
 //Admin site search function
@@ -97,6 +102,7 @@ Route::get('/tag/search', 'Admin\TagController@index')->name('tag.search');
 Route::get('/user/search', 'Admin\UserController@index')->name('user.search');
 Route::get('/order/search', 'Admin\OrderController@index')->name('order.search');
 Route::get('/message/search', 'SendEmailController@message')->name('message.search');
+Route::get('/review/search', 'Admin\ReviewController@index')->name('review.search');
 
 // Auth check login for admin
 Route::group(['middleware' => 'admin.login'], function ()
@@ -116,6 +122,8 @@ Route::group(['middleware' => 'admin.login'], function ()
     Route::get('admin/message', 'SendEmailController@message')->name('admin.message.index');
     Route::get('admin/message/detail/{id}', 'SendEmailController@messageDetail')->name('admin.message.detail');
     Route::post('admin/message/status/{id}', 'SendEmailController@status')->name('admin.message.status');
+
+    Route::post('admin/review/proceed', 'Admin\ReviewController@proceed')->name('admin.review.proceed');
 
     Route::get('/admin', 'Admin\AdminController@home')->name('admin.home');
 });
@@ -154,8 +162,8 @@ Route::post('/send/email', 'SendEmailController@send')->name('send');
 
 Auth::routes();
 Route::get('/test', 'HomeController@index')->name('home');
-Route::get('/testsite', 'TestController@index')->name('admin.test');
-Route::get('/testsite/input', 'TestController@testIndex')->name('admin.test2');
-Route::post('/testsite', 'TestController@test')->name('test');
 
-Route::post('/postMessage', 'TestController@sendMessage')->name('postMessage');
+// Route::get('/testsite', 'TestController@index')->name('admin.test');
+// Route::get('/testsite/input', 'TestController@testIndex')->name('admin.test2');
+// Route::post('/testsite', 'TestController@test')->name('test');
+// Route::post('/testsite/rating', 'TestController@ratingTest')->name('test.rating');

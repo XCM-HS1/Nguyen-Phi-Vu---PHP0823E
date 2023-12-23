@@ -28,30 +28,10 @@ class TestController extends Controller
         }
     }
 
-    public function sendMessage(Request $request)
+    public function ratingTest (Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required'
-        ]);
-
-        $data['title'] = $request->input('title');
-        $data['content'] = $request->input('content');
-
-        $options = array(
-            'cluster' => 'ap1',
-            'encrypted' => true
-        );
-
-        $pusher = new Pusher(
-            env('PUSHER_APP_KEY'),
-            env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'),
-            $options
-        );
-
-        $pusher->trigger('Notify', 'send-message', $data);
-
-        return redirect()->route('test');
+        $data = $request->rating;
+        dd($data);
+        return redirect()->route('admin.test2', compact('data'));
     }
 }
