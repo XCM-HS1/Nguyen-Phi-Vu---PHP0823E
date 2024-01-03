@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-// CLient side rendering
+// CLient site rendering
     Route::get('/', function () {
         return redirect()->route('client.home');
     });
@@ -40,8 +38,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('/home/shop/product/{slug}', 'ShopController@detail')->name('client.product-detail');
 
 
-
-//Auth check login for user
+// Auth check login for user and controllers
 Route::group(['middleware' => 'auth'], function ()
 {
     // Client shopping cart and checkout
@@ -71,16 +68,17 @@ Route::group(['middleware' => 'auth'], function ()
     Route::post('home/user/security/change-password', 'UserController@changePassword')->name('user.change.password');
     Route::get('home/user/purchase-history/{user}', 'UserController@purchaseHistory')->name('user.purchase.history');
     Route::get('home/user/purchase-history/detail/{id}', 'UserController@orderDetail')->name('user.order_detail');
-    Route::get('home/user/profile/rating', 'UserController@ratingIndex')->name('user.rating');
+    Route::get('home/user/profile/rating/{id}', 'UserController@ratingIndex')->name('user.rating');
     Route::post('home/user/profile/rating', 'UserController@rating')->name('user.pRating');
-    Route::get('home/user/profile/rating/view/{id}', 'UserController@viewRating')->name('user.view.rating');
-    Route::post('home/user/order/complete', 'UserController@received')->name('user.receive.order');
+    Route::get('home/user/profile/rating/view/order{id}/product{product_id}', 'UserController@viewRating')->name('user.view.rating');
+
 });
 
 
-// Auth check login for admin site
+// Auth check login for admin
 // php artisan make:controller ... --resource => automatically create routes for CRUD
 // php artisan route:list => check on routes directory and name created from above
+// Admin route with prefix and namespace for resource route
 Route::group(['prefix' => '/admin/', 'namespace' => 'Admin', 'as' => 'admin.', 'middleware' => 'admin.login'], function ()
 {
     Route::resource('tag', 'TagController');
@@ -93,7 +91,8 @@ Route::group(['prefix' => '/admin/', 'namespace' => 'Admin', 'as' => 'admin.', '
     Route::resource('review', 'ReviewController');
 });
 
-//Admin site search function
+
+// Admin site search function for each section
 Route::get('/admin/search', 'Admin\AdminController@index')->name('admin.search');
 Route::get('/blog/search', 'Admin\BlogController@index')->name('blog.search');
 Route::get('/category/search', 'Admin\CategoryController@index')->name('category.search');
@@ -104,7 +103,8 @@ Route::get('/order/search', 'Admin\OrderController@index')->name('order.search')
 Route::get('/message/search', 'SendEmailController@message')->name('message.search');
 Route::get('/review/search', 'Admin\ReviewController@index')->name('review.search');
 
-// Auth check login for admin
+
+// Auth check login for admin site and controllers
 Route::group(['middleware' => 'admin.login'], function ()
 {
     Route::get('admin/order/detail/{id}', 'Admin\OrderController@viewOrder')->name('admin.order_detail');
@@ -129,41 +129,30 @@ Route::group(['middleware' => 'admin.login'], function ()
 });
 
 
-//User Login, Logout and Register
+// User Login, Logout and Register controllers
 Route::get('user/register', 'UserController@register')->name('user.register');
 Route::post('user/register', 'UserController@store')->name('user.store');
 Route::get('user/login', 'UserController@login')->name('user.login');
 Route::post('user/login', 'UserController@pLogin')->name('user.pLogin');
 Route::get('user/logout', 'UserController@logout')->name('user.logout');
 
-//User social login
-Auth::routes();
-Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
-Route::get('/login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
+
+// User social login controllers
+Auth::routes([
+    'verify' => true
+]);
+Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider')
+    ->name('social.login');
+Route::get('/login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')
+    ->name('social.callback');
 
 
-// Admin Login, Logout
+// Admin Login, Logout controllers
 Route::get('admin/login', 'Admin\AdminController@adminLogin')->name('admin.login');
 Route::post('admin/login', 'Admin\AdminController@pAdminLogin')->name('admin.pLogin');
 Route::get('admin/logout', 'Admin\AdminController@adminLogout')->name('admin.logout');
 
 
-// Manual Route coding for CRUD function.
-// Route::get('category/create', 'CategoryController@create')->name('category.create');
-    // Route::post('category/create', 'CategoryController@store');
-    // Route::get('category', 'CategoryController@index')->name('category.index');
-    // Route::get('category/{id}/edit', 'CategoryController@edit')->name('category.edit');
-    // Route::put('category/{id}/edit', 'CategoryController@update')->name('category.update');
-    // Route::delete('category/delete/{id}', 'CategoryController@delete')->name('category.delete');
-
-//Send confirm email in "Contact"
+// Send confirm email for client message controller
 Route::get('/form', 'SendEmailController@index');
 Route::post('/send/email', 'SendEmailController@send')->name('send');
-
-Auth::routes();
-Route::get('/test', 'HomeController@index')->name('home');
-
-// Route::get('/testsite', 'TestController@index')->name('admin.test');
-// Route::get('/testsite/input', 'TestController@testIndex')->name('admin.test2');
-// Route::post('/testsite', 'TestController@test')->name('test');
-// Route::post('/testsite/rating', 'TestController@ratingTest')->name('test.rating');

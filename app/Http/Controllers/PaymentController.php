@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\OrderDetail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,6 +26,7 @@ class PaymentController extends Controller
         $order['address'] = $request->address;
         $order['note'] = $request->note;
         $order['payment_method'] = 'VNPay';
+        $order['status'] = 0;
         $order['created_at'] = now();
         $order['updated_at'] = now();
 
@@ -41,7 +43,28 @@ class PaymentController extends Controller
             $order_detail['created_at'] = now();
             $order_detail['updated_at'] = now();
 
+            $fixed['user_id'] = Auth::user()->id;
+            $fixed['user_name'] = Auth::user()->name;
+            $fixed['order_id'] = $order_id;
+            $fixed['product_id'] = $item->id;
+            $fixed['products'] = $item->name;
+            $fixed['image'] = $item->options->image;
+            $fixed['quantity'] = $item->qty;
+            $fixed['price'] = $item->price;
+            $fixed['review_status'] = 0;
+            $fixed['created_at'] = now();
+            $fixed['updated_at'] = now();
+
+            $review['user_id'] = Auth::user()->id;
+            $review['user_name'] = Auth::user()->name;
+            $review['status'] = 0;
+            $review['order_id'] = $order_id;
+            $review['product_id'] = $item->id;
+            $review['product_name'] = $item->name;
+
             DB::table('order_detail')->insert($order_detail);
+            DB::table('fixed_order_detail')->insert($fixed);
+            DB::table('reviews')->insert($review);
 
             $mail_order = [
                 'user_name' => $request->name,
@@ -55,13 +78,14 @@ class PaymentController extends Controller
                 'subtotal' => Cart::instance('cart')->subtotal(),
                 'total' => Cart::instance('cart')->total(),
             ];
+
+            //Send order detail mail to customer
+            if(Mail::to($request->email)->send(new OrderDetail($mail_order))){
+            Cart::instance('cart')->destroy();
+            }
         }
 
-        //Send order detail mail to customer
-        Mail::to($request->email)->send(new OrderDetail($mail_order));
-        Cart::instance('cart')->destroy();
 
-        
         //* VNPay application code
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "https://localhost/vnpay_php/vnpay_return.php";
@@ -130,7 +154,4 @@ class PaymentController extends Controller
                 echo json_encode($returnData);
             }
         }
-
-
-
 }

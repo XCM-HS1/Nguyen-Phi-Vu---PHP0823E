@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Organi | Register</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('admin-theme/assets/img/favicon/favicon.ico') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
@@ -22,36 +24,40 @@
                   </div>
                   <div class="col-xl-6">
                     <div class="card-body p-md-5 text-black">
-                      <h3 class="mb-5 text-uppercase">Registration</h3>
+                        <div class="d-flex">
+                            <i class="fa-2x me-3 fa-solid fa-leaf" style="color: #29d31d;"></i>
+                            <h3 class="mb-5 text-uppercase">Organi Registration </h3>
+                        </div>
 
-                    <form action="{{ route('user.store') }}" method="POST">
-                    @csrf
-                      <div class="form-outline mb-4">
-                        <input type="text" id="form3Example9" class="form-control form-control-lg" name="name"/>
-                        <label class="form-label" for="form3Example9">User Name</label>
-                      </div>
+                        <form action="{{ route('user.store') }}" method="POST">
+                            @csrf
 
-                      <div class="form-outline mb-4">
-                        <input type="text" id="form3Example9" class="form-control form-control-lg" name="phone_number"/>
-                        <label class="form-label" for="form3Example9">Phone Number</label>
-                      </div>
+                            <div class="form-outline mb-4">
+                                <input type="text" id="form3Example9" class="form-control form-control-lg" name="name" placeholder="Username" required/>
+                                <label class="form-label" for="form3Example9">Username</label>
+                            </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="text" id="form3Example90" class="form-control form-control-lg" name="email"/>
-                        <label class="form-label" for="form3Example90">Email</label>
-                      </div>
+                            <div class="form-outline mb-4">
+                                <input type="tel" id="form3Example9" class="form-control form-control-lg" name="phone_number" maxlength="11" placeholder="(+84)" required/>
+                                <label class="form-label" for="form3Example9">Phone Number</label>
+                            </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="password" id="form3Example99" class="form-control form-control-lg" name="password"/>
-                        <label class="form-label" for="form3Example99">Password</label>
-                      </div>
+                            <div class="form-outline mb-4">
+                                <input type="text" id="form3Example90" class="form-control form-control-lg" name="email" placeholder="Email" required/>
+                                <label class="form-label" for="form3Example90">Email</label>
+                            </div>
 
-                      <div class="d-flex justify-content-end pt-3">
-                        <button type="submit" class="btn btn-warning btn-lg ms-2">Register</button>
-                      </div>
-                    </form>
-                        <br>
-                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Already have an account? <a href="{{ route('user.login') }}"
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form3Example99" class="form-control form-control-lg" name="password" placeholder="***************" required/>
+                                <label class="form-label" for="form3Example99">Password</label>
+                            </div>
+
+                            <div class="d-flex justify-content-center mb-5">
+                                <button type="submit" class="btn btn-success btn-lg ms-2">Register</button>
+                            </div>
+                        </form>
+
+                        <p class="mb-2 pb-lg-2" style="color: #393f81;">Already have an account? <a href="{{ route('user.login') }}"
                             style="color: #393f81;">Login here</a></p>
                         <a href="#!" class="small text-muted">Terms of use.</a>
                         <a href="#!" class="small text-muted">Privacy policy</a>

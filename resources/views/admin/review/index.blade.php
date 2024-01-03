@@ -22,11 +22,12 @@
         <thead class="text-center align-middle">
         <tr>
             <th scope="col">STT</th>
+            <th scope="col">Order ID</th>
             <th scope="col">Username</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Review</th>
             <th scope="col">Status</th>
             <th scope="col">Created At</th>
-            <th scope="col">Updated At</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
@@ -36,7 +37,9 @@
         <tbody class="text-center">
         <tr>
             <td style="width: 3rem"> {{ ++$key }} </td>
+            <td style="width: 3rem"> {{$item->order_id}} </td>
             <td > {{ $item->user_name }} </td>
+            <td> {{$item->product_name}} </td>
             <td> {{Str::limit($item->review, 50)}} </td>
             @if ($item->status == 0)
                 <td><span class="badge bg-primary"> Not Rated </span></td>
@@ -46,7 +49,6 @@
                 <td><span class="badge bg-success"> Verified </span></td>
             @endif
             <td style="width: 3rem"> {{ $item->created_at === null ? "N/A" : $item->created_at->format('H:i m/d/Y')}} </td>
-            <td style="width: 3rem"> {{ $item->updated_at === null ? "N/A" : $item->updated_at->format('H:i m/d/Y')}} </td>
             @if( $item->status == 0)
             <td></td>
             @else

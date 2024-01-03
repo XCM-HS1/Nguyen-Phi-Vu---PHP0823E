@@ -25,22 +25,5 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        if(Auth::user()){
-            $user_id = Auth::user()->id;
-            $wishlistAuth = DB::table('wishlist')->where('user_id', '=', $user_id)->get();
-            $user_data = User::where('id', '=', $user_id)->get();
-
-        }
-        else {
-            $user_id = "";
-            $wishlistAuth = "";
-            $user_data = "";
-        }
-
-        $products = Product::orderBy('id', 'DESC')->get();
-
-        return view('client.home', compact('wishlistAuth', 'products', 'user_data'));
-    }
+    
 }

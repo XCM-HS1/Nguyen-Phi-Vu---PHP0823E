@@ -7,7 +7,10 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Wishlist</title>
+    @foreach($user_data as $data)
+    <title>Ogani | Wishlist | {{$data->name}}</title>
+    @endforeach
+    <link rel="icon" type="image/x-icon" href="{{ asset('admin-theme/assets/img/favicon/favicon.ico') }}" />
 
     <!-- Google Font -->
     @include('client.layouts.font')

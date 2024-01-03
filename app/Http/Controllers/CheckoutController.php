@@ -79,10 +79,16 @@ class CheckoutController extends Controller
             $fixed['image'] = $item->options->image;
             $fixed['quantity'] = $item->qty;
             $fixed['price'] = $item->price;
+            $fixed['review_status'] = 0;
             $fixed['created_at'] = now();
             $fixed['updated_at'] = now();
 
+            $review['user_id'] = Auth::user()->id;
+            $review['user_name'] = Auth::user()->name;
             $review['status'] = 0;
+            $review['order_id'] = $order_id;
+            $review['product_id'] = $item->id;
+            $review['product_name'] = $item->name;
 
             DB::table('order_detail')->insert($order_detail);
             DB::table('fixed_order_detail')->insert($fixed);
@@ -103,16 +109,10 @@ class CheckoutController extends Controller
         }
 
         //Send order detail mail to customer
-        if(Mail::to($request->email)->send(new OrderDetail($mail_order))){
-            return redirect()->route('client.checkout.success')->with('info', 'Check your email to get more details on this order!');
-        }
-        else{
-            return redirect()->route('client.checkout.success')->with('error', 'Something went wrong, please try again later!');
-        }
-
+        Mail::to($request->email)->send(new OrderDetail($mail_order));
         Cart::instance('cart')->destroy();
 
-        return redirect()->route('client.checkout.success')->with('success', 'Your order has been placed successfully!');
+        return redirect()->route('client.checkout.success')->with('success', 'Your order has been placed successfully!Please check your email for details on this order!');
     }
 
     public function success()

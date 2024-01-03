@@ -56,16 +56,60 @@
                     </li>
                   </ul>
                   @endforeach
+
                   <div class="card">
                     <h5 class="card-header">Order Detail
-                        @if($data1->status == 0)
+                        @if($data2->status == 0)
                         <span class="badge bg-primary">Processing</span>
-                        @elseif($data1->status == 1)
+                        @elseif($data2->status == 1)
                         <span class="badge bg-warning">On Delivery</span>
                         @else
                         <span class="badge bg-success">Completed</span>
                         @endif
                     </h5>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover container text-center">
+                                <thead class="align-middle">
+                                  <tr>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">User Email</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Note</th>
+                                    <th scope="col">Payment Method</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Updated At</th>
+                                  </tr>
+                                </thead>
+
+                                @foreach($orders as $item)
+
+                                <tbody>
+                                  <tr>
+                                    <td style="width: 3rem"> {{ $item->id }} </td>
+                                    <td> {{ $item->user_name }} </td>
+                                    <td> {{ $item->email }} </td>
+                                    <td style="width: 3rem"> {{ $item->subtotal }} </td>
+                                    <td style="width: 3rem"> {{ $item->total }} </td>
+                                    <td style="width: 3rem"> {{ $item->phone }} </td>
+                                    <td> {{ $item->address }} </td>
+                                    <td> {{ $item->note }} </td>
+                                    <td style="width: 3rem"> {{ $item->payment_method }} </td>
+                                    <td style="width: 3rem"> {{ $item->created_at }} </td>
+                                    <td style="width: 3rem"> {{ $item->updated_at }}</td>
+                                  </tr>
+                                </tbody>
+
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="card-body">
                     <div class="table-responsive">
                       <table class="table table-bordered border-bottom">
@@ -76,16 +120,19 @@
                             <th>Products</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            @if($data1->status == 2)
+                            @if($data2->status==2)
                             <th>Status</th>
-                            <th>Rating/View</th>
+                            <th>Rating</th>
+                            @elseif ($data1->review_status==1)
+                            <th>Status</th>
+                            <th>View Rated</th>
                             @endif
                           </tr>
                         </thead>
 
                         <tbody class="text-nowrap text-center">
+                            @foreach($order_detail as $key => $item)
                             <tr>
-                                @foreach($order_detail as $key => $item)
                                 <td> {{++$key}} </td>
                                 <td> {{$item->order_id}} </td>
                                 <td>
@@ -94,52 +141,39 @@
                                 </td>
                                 <td> {{$item->quantity}} </td>
                                 <td> {{$item->price}} </td>
-                                @if($data1->status == 2)
-                                @foreach($review_data as $data)
-                                <td>
-                                    @if($data->status == 0)
-                                    <span class="badge rounded-pill bg-danger">Not Rated</span>
+
+                                @if($data2->status == 2)
+                                    @if($item->review_status == 0)
+                                    <td>
+                                        <span class="badge bg-danger">Not Rated</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('user.rating', ['id' => $item->product_id]) }}">
+                                            <button type="button" class="btn btn-warning btn-sm">Rate Now!</button>
+                                        </a>
+                                    </td>
                                     @else
-                                    <span class="badge rounded-pill bg-success">Rated</span>
+                                    <td>
+                                        <span class="badge bg-success">Rated</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('user.view.rating', ['id' => $item->order_id, 'product_id' => $item->product_id]) }}">
+                                            <button type="button" class="btn btn-sm btn-info">View</button>
+                                        </a>
+                                    </td>
                                     @endif
-                                </td>
-                                <td>
-                                    @if($data->status == 0)
-                                    <a href="{{ route('user.rating') }}">
-                                        <button type="button" class="btn btn-warning btn-sm">
-                                            <i class="fa-solid fa-award"></i>
-                                        </button>
-                                    </a>
-                                    @else
-                                    <a href="{{ route('user.view.rating', ['id' => $item->product_id]) }}">
-                                        <button type="button" class="btn btn-info btn-sm">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </a>
-                                    @endif
-                                </td>
-                                @endforeach
                                 @endif
-                                @endforeach
                             </tr>
+                            @endforeach
                         </tbody>
                       </table>
                     </div>
+
                     <div class="mb-3 mt-4 col-md-12">
                     @foreach($user_data as $user1)
-                        @if($data1->status == 2)
-                        <form action="{{ route('user.receive.order') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-info">I have received the order!</button>
-                            <a href="{{route('user.purchase.history', $user1->id)}}">
-                                <button type="button" class="btn btn-outline-secondary">Back</button>
-                            </a>
-                        </form>
-                        @else
                         <a href="{{route('user.purchase.history', $user1->id)}}">
                             <button type="button" class="btn btn-outline-secondary">Back</button>
                         </a>
-                        @endif
                     @endforeach
                     </div>
                   </div>

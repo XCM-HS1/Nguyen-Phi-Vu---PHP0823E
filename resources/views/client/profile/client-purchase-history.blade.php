@@ -55,6 +55,14 @@
                     </li>
                   </ul>
 
+                  @if(! $order_data->first())
+
+                  <div class="card">
+                    <h5 class="card-header">You haven't placed any orders, please check your order and try again!</h5>
+                  </div>
+
+                  @else
+
                   <div class="card">
                     <h5 class="card-header">Purchased Products</h5>
                     <div class="card-body">
@@ -106,6 +114,9 @@
                     </div>
                     </div>
                   </div>
+
+                  @endif
+
                 </div>
               </div>
             </div>

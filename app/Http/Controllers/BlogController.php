@@ -78,6 +78,8 @@ class BlogController extends Controller
 
         $tag = Tag::where('slug', $slug)->first();
 
+        $tags = Tag::where('slug', $slug)->get();
+
         if(Auth::user()){
             $user_id = Auth::user()->id;
             $wishlistAuth = DB::table('wishlist')->where('user_id', '=', $user_id)->get();
@@ -90,6 +92,6 @@ class BlogController extends Controller
             $user_data = "";
         }
 
-        return view('client.tag', compact('tag', 'tags_data', 'categories_data', 'wishlistAuth', 'blogs_data', 'user_data'));
+        return view('client.tag', compact('tag', 'tags', 'tags_data', 'categories_data', 'wishlistAuth', 'blogs_data', 'user_data'));
     }
 }

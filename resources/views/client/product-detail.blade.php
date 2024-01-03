@@ -7,7 +7,10 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Product</title>
+    @foreach ($products as $product)
+    <title>Ogani | Product | {{$product->product_name}}</title>
+    @endforeach
+    <link rel="icon" type="image/x-icon" href="{{ asset('admin-theme/assets/img/favicon/favicon.ico') }}" />
 
     <!-- Google Font -->
     @include('client.layouts.font')
@@ -143,7 +146,6 @@
                         <h2>Vegetable’s Package</h2>
                         <div class="breadcrumb__option">
                             <a href="{{route('client.home')}}">Home</a>
-                            {{-- <a href="./index.html">Vegetables</a> --}}
                             <span>Vegetable’s Package</span>
                         </div>
                     </div>

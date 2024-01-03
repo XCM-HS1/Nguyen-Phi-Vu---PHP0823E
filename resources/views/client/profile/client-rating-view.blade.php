@@ -178,11 +178,9 @@
                         </div>
 
                     <div class="mb-3 mt-4 col-md-12">
-                    @foreach($order_data as $data)
-                        <a href="{{route('user.order_detail', ['id' => $data->id])}}">
+                        <a href="{{route('user.order_detail', ['id' => $data->order_id])}}">
                             <button type="button" class="btn btn-outline-secondary">Back</button>
                         </a>
-                    @endforeach
                     </div>
                   </div>
                   @endforeach

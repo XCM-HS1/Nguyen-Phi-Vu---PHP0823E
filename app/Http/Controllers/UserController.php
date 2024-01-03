@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
+use function Laravel\Prompts\select;
+
 class UserController extends Controller
 {
     /**
@@ -38,24 +40,24 @@ class UserController extends Controller
         return view('client.profile.client-purchase-history', compact('user', 'order_data'));
     }
 
-    public function ratingIndex()
+    public function ratingIndex($id)
     {
         $user_data = User::where('id', '=', Auth::user()->id)->get();
         $order_data = Order::where('user_id', '=', Auth::user()->id)->get();
-        foreach($order_data as $data){}
-        return view('client.profile.client-rating', compact('user_data', 'data'));
+        foreach($order_data as $data){
+            // dd($data);
+        }
+        return view('client.profile.client-rating', compact('user_data', 'data', 'id'));
     }
 
     public function rating (Request $request)
     {
-        $order_data = DB::table('fixed_order_detail')->where('user_id', '=', Auth::user()->id)->get();
+        $product_id = $request->product_id;
+        $order_data = DB::table('fixed_order_detail')->where('user_id', '=', Auth::user()->id)->where('product_id', '=', $product_id)->get();
+        // dd($order_data);
         foreach($order_data as $data){
             // dd($data);
-            $review['user_id'] = Auth::user()->id;
-            $review['user_name'] = Auth::user()->name;
-            $review['order_id'] = $data->order_id;
-            $review['product_id'] = $data->product_id;
-            $review['product_name'] = $data->products;
+
             $review['review'] = $request->review;
             $review['rating'] = $request->rating;
             if($request->hasFile('image')) {
@@ -65,52 +67,51 @@ class UserController extends Controller
             $review['status'] = 1;
             $review['created_at'] = now();
             $review['updated_at'] = now();
+            // dd($review);
+
+            $fixed['review_status'] = 1;
+
+            DB::table('fixed_order_detail')->where('product_id', '=', $product_id)->update($fixed);
+            $rating = DB::table('reviews')->where('order_id', '=', $data->order_id)->where('product_id', '=', $data->product_id)->update($review);
         }
 
-        if(DB::table('reviews')->insert($review)){
+        if($rating){
             return redirect()->route('client.home')->with('success', 'You have successfully rated an item! Please return to rate another item!');
         }
         else{
             return redirect()->route('client.home')->with('error', 'Something went wrong, please try again later!');
         }
-
     }
 
-    public function viewRating ($id)
+    public function viewRating (string $id, string $product_id)
     {
+        // $id is order id
         $user_data = User::where('id', '=', Auth::user()->id)->get();
-        $order_data = Order::where('user_id', '=', Auth::user()->id)->get();
-        $view_data = DB::table('reviews')->where('user_id', '=', Auth::user()->id)->where('product_id', '=', $id)->get();
-        foreach($view_data as $data){
-            $fixed_data = DB::table('fixed_order_detail')->where('user_id', '=', Auth::user()->id)->where('order_id', '=', $data->order_id)->where('product_id', '=', $id)->get();
-            // dd($fixed);
-        }
+        $view_data = DB::table('reviews')->where('order_id', '=', $id)->where('product_id', '=', $product_id)->get();
+        $fixed_data = DB::table('fixed_order_detail')->where('order_id', '=', $id)->where('product_id', '=', $product_id)->get();
 
-        return view('client.profile.client-rating-view', compact('user_data', 'order_data', 'view_data', 'fixed_data'));
+        return view('client.profile.client-rating-view', compact('user_data', 'view_data', 'fixed_data'));
     }
 
     public function orderDetail ($id)
     {
+        // $id = order id
         $user_data = User::where('id', '=', Auth::user()->id)->get();
 
         $orders = DB::table('orders')->where('id', '=', $id)->get();
         // dd($orders);
-        foreach($orders as $data1){
-            // dd($data1);
-            $order_detail = DB::table('fixed_order_detail')->where('order_id', '=', $data1->id)->get();
+        foreach($orders as $data2){
+            // dd($data2);
+            $order_detail = DB::table('fixed_order_detail')->where('order_id', '=', $data2->id)->get();
             // dd($order_detail);
-            foreach($order_detail as $order_detail_data){
-                $review_data = Review::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $order_detail_data->product_id)->get();
-                // dd($review_data);
+            foreach($order_detail as $data1){
+                $review_data = Review::where('user_id', '=', Auth::user()->id)->get();
             }
         }
 
-        return view('client.profile.client-order-detail', compact('orders', 'order_detail', 'user_data', 'review_data', 'data1'));
-    }
 
-    public function received ()
-    {
 
+        return view('client.profile.client-order-detail', compact('orders', 'order_detail', 'user_data', 'review_data', 'data1', 'data2'));
     }
 
     public function changePassword(Request $request, User $user)

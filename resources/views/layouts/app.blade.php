@@ -77,9 +77,8 @@
                     </div>
                     <div class="hero__item set-bg" data-setbg="{{ asset('client-theme/img/hero/banner.jpg') }}">
                         <div class="hero__text">
-                            <span>All Fresh</span>
+                            <span>Test Site</span>
                             <h2 class="auto-type"></h2>
-                            <p>Free Pickup and Delivery Available</p>
                             <a href="{{ route('client.shop') }}" class="primary-btn">SHOP NOW</a>
                         </div>
                     </div>
@@ -87,15 +86,6 @@
             </div>
         </div>
     </section>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-        <script>
-            var typed = new Typed(".auto-type", {
-                strings: ["Fresh Meat", "Vegetables", "Fresh Fruit", "Dried Fruit", "Drinks"],
-                typeSpeed: 60,
-                backSpeed: 60,
-                loop: true
-            })
-        </script>
 
     <!-- Hero Section End -->
 

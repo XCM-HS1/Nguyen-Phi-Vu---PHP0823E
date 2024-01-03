@@ -105,6 +105,7 @@
 
                   <form action="{{ route('user.pRating') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" value="{{$id}}" name="product_id"/>
                     <div class="card">
                         <h5 class="card-header">Leave a review to better our performance in the future!</h5>
                         <div class="card-body">

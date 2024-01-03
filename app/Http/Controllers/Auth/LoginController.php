@@ -37,21 +37,24 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
 
     public function redirectToProvider(string $provider)
     {
         try {
             $scopes = config("services.$provider.scopes") ?? [];
+
             if (count($scopes) === 0) {
                 return Socialite::driver($provider)->redirect();
-            } else {
+            }
+            else {
                 return Socialite::driver($provider)->scopes($scopes)->redirect();
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             abort(404);
         }
     }
@@ -60,9 +63,9 @@ class LoginController extends Controller
     {
         try {
             $data = Socialite::driver($provider)->user();
-
             return $this->handleSocialUser($provider, $data);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return redirect('login')->withErrors(['authentication_deny' => 'Login with '.ucfirst($provider).' failed. Please try again.']);
         }
     }
@@ -88,7 +91,6 @@ class LoginController extends Controller
             'id' => $data->id,
             'token' => $data->token
         ];
-
         $user->social = $social;
         $user->save();
 
@@ -113,8 +115,10 @@ class LoginController extends Controller
                 $user->markEmailAsVerified();
             }
             $user->save();
-        return $this->socialLogin($user);
-        } catch (Exception $e) {
+
+            return $this->socialLogin($user);
+        }
+        catch (Exception $e) {
             return redirect('login')->withErrors(['authentication_deny' => 'Login with '.ucfirst($provider).' failed. Please try again.']);
         }
     }
@@ -122,6 +126,7 @@ class LoginController extends Controller
     public function socialLogin(User $user)
     {
         auth()->loginUsingId($user->id);
-        return redirect($this->redirectTo);
+
+        return redirect($this->redirectTo)->with('success', 'You are logged in!');
     }
 }
