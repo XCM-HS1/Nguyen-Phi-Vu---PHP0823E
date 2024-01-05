@@ -90,9 +90,9 @@ class CheckoutController extends Controller
             $review['product_id'] = $item->id;
             $review['product_name'] = $item->name;
 
-            // DB::table('order_detail')->insert($order_detail);
-            // DB::table('fixed_order_detail')->insert($fixed);
-            // DB::table('reviews')->insert($review);
+            DB::table('order_detail')->insert($order_detail);
+            DB::table('fixed_order_detail')->insert($fixed);
+            DB::table('reviews')->insert($review);
         }
 
         $mail_order = [
@@ -110,6 +110,7 @@ class CheckoutController extends Controller
 
         //Send order detail mail to customer
         Mail::to($request->email)->send(new OrderDetail($mail_order));
+        
         Cart::instance('cart')->destroy();
 
         return redirect()->route('client.checkout.success')->with('success', 'Your order has been placed successfully!Please check your email for details on this order!');

@@ -79,12 +79,11 @@ class PaymentController extends Controller
             'subtotal' => Cart::instance('cart')->subtotal(),
             'total' => Cart::instance('cart')->total(),
         ];
-
-        //Send order detail mail to customer
-        Mail::to($request->email)->send(new OrderDetail($mail_order));
         
         Cart::instance('cart')->destroy();
 
+        //Send order detail mail to customer
+        Mail::to($request->email)->send(new OrderDetail($mail_order));
 
 
         //* VNPay application code

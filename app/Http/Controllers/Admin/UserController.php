@@ -137,9 +137,7 @@ class UserController extends Controller
             return redirect()->route('admin.user.index')->with('error', 'Something went wrong! Please try again later!');
         }
 
-        if(! DB::table('wishlist')->where('user_id' , '=', $user->id)->delete()){
-            return redirect()->route('admin.user.index')->with('error', "Cannot delete user wishlist from table: 'wishlist'!");
-        }
+        DB::table('wishlist')->where('user_id' , '=', $user->id)->delete();
 
         return redirect()->route('admin.user.index')->with('warning', 'An user account has been temporary disable! You can restore the account with the restore button below!');
     }

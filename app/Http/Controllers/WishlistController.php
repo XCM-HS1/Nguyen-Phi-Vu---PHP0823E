@@ -87,14 +87,9 @@ class WishlistController extends Controller
         $rowId = $request->rowId;
         // dd($rowId);
         Cart::instance('wishlist')->remove($rowId);
-        $delete = DB::table('wishlist')->where('rowId', '=', $rowId)->delete();
+        DB::table('wishlist')->where('rowId', '=', $rowId)->delete();
 
-        if($delete){
-            return redirect()->route('client.wishlist')->with('success', 'An item has been removed from your wishlist!');
-        }
-        else{
-            return redirect()->route('client.wishlist')->with('error', 'Something went wrong, please try again later!');
-        }
+        return redirect()->route('client.wishlist')->with('success', 'An item has been removed from your wishlist!');
     }
 
     public function clearAll ()
