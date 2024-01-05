@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('wishlist', function (Blueprint $table) {
-            $table->bigInteger('product_id')->after('name');
+            $table->bigInteger('product_id')->after('product_name');
         });
     }
 

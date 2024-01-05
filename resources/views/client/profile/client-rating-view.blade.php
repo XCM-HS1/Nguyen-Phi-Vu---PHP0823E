@@ -57,6 +57,22 @@
                   </ul>
                   @endforeach
 
+                  @if(is_null($view_data_block))
+
+                  <div class="card">
+                    <h5 class="card-header">Your reviews has been blocked due to company policy!</h5>
+                  </div>
+
+                  @foreach($fixed_data as $data)
+                  <div class="mb-3 mt-4 col-md-12">
+                    <a href="{{route('user.order_detail', ['id' => $data->order_id])}}">
+                        <button type="button" class="btn btn-outline-secondary">Back</button>
+                    </a>
+                  </div>
+                  @endforeach
+
+                  @else
+
                   @foreach($view_data as $item)
                   <div class="card">
                     <h5 class="card-header">Rated Information ({{$item->created_at}})</h5>
@@ -184,7 +200,7 @@
                     </div>
                   </div>
                   @endforeach
-
+                  @endif
                 </div>
               </div>
             </div>

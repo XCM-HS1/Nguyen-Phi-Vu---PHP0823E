@@ -114,7 +114,7 @@
                             <li><a href="{{route('client.wishlist')}}"><i class="fa fa-heart"></i> <span>{{ $wishlistAuth->count() }}</span></a></li>
                             <li><a href="{{route('client.cart')}}"><i class="fa fa-shopping-bag"></i> <span>{{Cart::instance('cart')->count()}}</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>${{Cart::instance('cart')->total()}}</span></div>
+                        <div class="header__cart__price">.00item: <span>${{Cart::instance('cart')->total()}}</span></div>
                     </div>
                     @else
                     <div class="header__cart">
@@ -122,7 +122,7 @@
                             <li><a href="{{route('client.wishlist')}}"><i class="fa fa-heart"></i> <span>0</span></a></li>
                             <li><a href="{{route('client.cart')}}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$0</span></div>
+                        <div class="header__cart__price">.00item: <span>$0</span></div>
                     </div>
                     @endif
                 </div>
@@ -185,8 +185,8 @@
                                                 <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>{{ $product->product_name}}</h6>
-                                                <span>${{ $product->price}}</span>
+                                                <h6>{{ Str::limit($product->product_name, 25)}}</h6>
+                                                <span>${{ $product->price}}.00</span>
                                             </div>
                                         </a>
                                         @endforeach
@@ -198,8 +198,8 @@
                                                 <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>{{ $product->product_name}}</h6>
-                                                <span>${{ $product->price}}</span>
+                                                <h6>{{ Str::limit($product->product_name, 25)}}</h6>
+                                                <span>${{ $product->price}}.00</span>
                                             </div>
                                         </a>
                                         @endforeach
@@ -220,8 +220,8 @@
                                         <div class="product__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image)}}">
                                         </div>
                                         <div class="product__item__text">
-                                            <h6><a href="#">{{ $product->product_name }}</a></h6>
-                                            <h5>${{ $product->price }}</h5>
+                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ Str::limit($product->product_name, 50) }}</a></h6>
+                                            <h5>${{ $product->price }}.00</h5>
                                         </div>
                                     </div>
                                 </div>

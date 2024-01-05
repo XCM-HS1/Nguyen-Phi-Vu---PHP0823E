@@ -90,23 +90,23 @@ class CheckoutController extends Controller
             $review['product_id'] = $item->id;
             $review['product_name'] = $item->name;
 
-            DB::table('order_detail')->insert($order_detail);
-            DB::table('fixed_order_detail')->insert($fixed);
-            DB::table('reviews')->insert($review);
-
-            $mail_order = [
-                'user_name' => $request->name,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'note' => $request->note,
-                'order_id' => $order_id,
-                'products' => $item->name,
-                'quantity' => $item->qty,
-                'price' => $item->price,
-                'subtotal' => Cart::instance('cart')->subtotal(),
-                'total' => Cart::instance('cart')->total(),
-            ];
+            // DB::table('order_detail')->insert($order_detail);
+            // DB::table('fixed_order_detail')->insert($fixed);
+            // DB::table('reviews')->insert($review);
         }
+
+        $mail_order = [
+            'user_name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'note' => $request->note,
+            'order_id' => $order_id,
+            'products' => $item->name,
+            'quantity' => $item->qty,
+            'price' => $item->price,
+            'subtotal' => Cart::instance('cart')->subtotal(),
+            'total' => Cart::instance('cart')->total(),
+        ];
 
         //Send order detail mail to customer
         Mail::to($request->email)->send(new OrderDetail($mail_order));

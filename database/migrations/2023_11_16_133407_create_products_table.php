@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('slug');
             $table->string('image')->nullable();
-            $table->bigInteger('price');
+            $table->string('price');
             $table->tinyInteger('availability');
             $table->float('weight');
             $table->string('description');

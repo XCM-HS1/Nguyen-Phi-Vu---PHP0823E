@@ -151,7 +151,7 @@
             <button type="submit" class="btn btn-primary">Proceed</button>
 
             <a href="{{ route('admin.review.index') }}">
-                <button type="button" class="btn btn-danger">Cancel</button>
+                <button type="button" class="btn btn-secondary">Back</button>
             </a>
         </div>
 
@@ -165,7 +165,7 @@
             <div class="col-xl-6">
                 <button type="submit" class="btn btn-danger">Delete</button>
                 <a href="{{ route('admin.review.index') }}">
-                    <button type="button" class="btn btn-danger">Cancel</button>
+                    <button type="button" class="btn btn-secondary">Back</button>
                 </a>
             </div>
         </form>

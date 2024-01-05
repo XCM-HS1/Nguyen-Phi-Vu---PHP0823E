@@ -181,11 +181,11 @@
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @if($product->availability == 0)
-                                                <h6>{{ $product->product_name}}</h6>
+                                                <h6>{{ Str::limit($product->product_name, 20) }}</h6>
                                                 <p>(Out Of Stock)</p>
                                                 @else
-                                                <h6>{{ $product->product_name }}</h6>
-                                                <span>{{ $product->price}}</span>
+                                                <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                                <span>{{ $product->price}}.00</span>
                                                 @endif
                                             </div>
                                         </a>
@@ -199,11 +199,11 @@
                                             </div>
                                             <div class="latest-product__item__text">
                                                 @if($product->availability == 0)
-                                                <h6>{{ $product->product_name}}</h6>
+                                                <h6>{{ Str::limit($product->product_name, 20) }}</h6>
                                                 <p>(Out Of Stock)</p>
                                                 @else
-                                                <h6>{{ $product->product_name }}</h6>
-                                                <span>{{ $product->price}}</span>
+                                                <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                                <span>${{ $product->price}}.00</span>
                                                 @endif
                                             </div>
                                         </a>
@@ -221,7 +221,7 @@
 
                     <div class="filter__item">
                     </div>
-                    
+
                     <div class="row">
                         @foreach($products as $product)
                             <a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">
@@ -230,18 +230,20 @@
                                         <div class="product__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image)}}">
                                         </div>
                                         <div class="product__item__text">
-                                            @if($product->availability !== 0)
-                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ $product->product_name }}</a></h6>
-                                            <h5>{{ $product->price }}</h5>
-                                            @else
-                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ $product->product_name }}</a></h6>
-                                            <p>(Out Of Stock)</p>
-                                            @endif
+                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ Str::limit($product->product_name, 50) }}</a></h6>
+                                            <h5>${{ $product->price }}.00</h5>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         @endforeach
+                    </div>
+
+                    <div class="container-xxl container-p-y">
+                        {{ $products->onEachSide(1)->links() }}
+                    </div>
+
+                    <div class="filter__item">
                     </div>
 
                     <h2>Out Of Stock</h2>
@@ -256,18 +258,17 @@
                                         <div class="product__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image)}}">
                                         </div>
                                         <div class="product__item__text">
-                                            @if($product->availability !== 0)
-                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ $product->product_name }}</a></h6>
-                                            <h5>{{ $product->price }}</h5>
-                                            @else
-                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ $product->product_name }}</a></h6>
-                                            <p>(Out Of Stock)</p>
-                                            @endif
+                                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ Str::limit($product->product_name, 50) }}</a></h6>
+                                            <h5>Out Of Stock</h5>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         @endforeach
+                    </div>
+
+                    <div class="container-xxl container-p-y">
+                        {{ $out_of_stock->onEachSide(1)->links() }}
                     </div>
                 </div>
             </div>

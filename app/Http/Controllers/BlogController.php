@@ -62,7 +62,7 @@ class BlogController extends Controller
         $tags = Tag::all();
 
         $blogs = Blog::where('slug', $slug)->get();
-        $lBlogs = Blog::orderBy('created_at', 'DESC')->get()->take(3);
+        $lBlogs = Blog::orderBy('created_at', 'DESC')->paginate(4);
         $rBlogs = Blog::where('slug', '!=', $slug)->inRandomOrder('id')->get()->take(3);
 
         return view('client.blog-detail', compact('blogs', 'rBlogs', 'lBlogs', 'categories_data', 'wishlistAuth', 'tags', 'user_data'));

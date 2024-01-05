@@ -185,7 +185,7 @@
                                         <img src="{{ asset('storage/' . $blog2->image)}}" style="width: 100px">
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
-                                        <h6>{{ $blog2->title }}</h6>
+                                        <h6>{{ Str::limit($blog2->title, 25) }}</h6>
                                         <span>{{ $blog2->created_at->format("m/d/Y") }}</span>
                                     </div>
                                 </a>
@@ -201,7 +201,6 @@
                     <!-- Blog Content -->
                     <div class="blog__details__text">
                         <h2 >{{ $blog1->title }}</h2> <br>
-                        <img src="{{ asset('storage/' . $blog1->image)}}" style="width: 500px">
                         <p>{!! $blog1->content !!}</p>
                     </div>
 
@@ -211,11 +210,10 @@
                             <div class="col-lg-6">
                                 <div class="blog__details__author">
                                     <div class="blog__details__author__pic">
-                                        <img src="{{ asset('admin-theme/template/assets/images/faces/face15.jpg') }}" alt="">
+                                        <img src="{{ asset('admin-theme/assets/img/avatars/7.png') }}" alt="">
                                     </div>
                                     <div class="blog__details__author__text">
                                         <h6>{{ Auth::guard('admin')->name }}</h6>
-                                        <span>Admin</span>
                                     </div>
                                 </div>
                             </div>
@@ -266,7 +264,7 @@
                                     <ul>
                                         <li><i class="fa fa-calendar-o"></i>{{ $blog3->created_at->format('m/d/Y') }}</li>
                                     </ul>
-                                    <h5>{{ $blog3->title }}</h5>
+                                    <h5>{{ Str::limit($blog3->title, 50) }}</h5>
                                 </div>
                             </div>
                         </a>

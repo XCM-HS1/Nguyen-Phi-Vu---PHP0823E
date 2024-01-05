@@ -14,7 +14,7 @@ class AppController extends Controller
 {
     public function index ()
     {
-        $products = Product::orderBy('created_at', 'DESC')->paginate(8);
+        $products = Product::inRandomOrder('price')->paginate(8);
         $lProducts = Product::orderBy('created_at', 'DESC')->paginate(3);
         $pProducts = Product::orderBy('price', 'DESC')->paginate(3);
         $aProducts = Product::orderBy('availability', 'DESC')->paginate(3);

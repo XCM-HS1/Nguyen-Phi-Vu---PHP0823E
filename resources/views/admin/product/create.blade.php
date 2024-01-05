@@ -24,7 +24,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-money-bill"></i></span>
                                 <input type="number" class="form-control" placeholder="Product Price" name="price" required/>
-                                <span class="input-group-text">.000₫</span>
+                                <span class="input-group-text">$</span>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                     <div class="card-body">
                     <div class="mb-3">
                         <label for="formFile" class="form-label">Images</label>
-                        <input class="form-control" type="file" id="formFile" name="image"/>
+                        <input class="form-control" type="file" id="formFile" name="image" />
                     </div>
                     </div>
                 </div>

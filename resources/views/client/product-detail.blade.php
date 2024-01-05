@@ -143,10 +143,10 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Vegetable’s Package</h2>
+                        <h2>Oragani Products</h2>
                         <div class="breadcrumb__option">
                             <a href="{{route('client.home')}}">Home</a>
-                            <span>Vegetable’s Package</span>
+                            <span>1</span>
                         </div>
                     </div>
                 </div>
@@ -167,6 +167,7 @@
                             <img class="product__details__pic__item--large"
                                 src="{{ asset('storage/' . $product->image)}}" alt="">
                         </div>
+
                         {{-- <div class="product__details__pic__slider owl-carousel">
                             <img data-imgbigurl="{{ asset('client-theme/img/product/details/product-details-2.jpg') }}"
                                 src="{{ asset('client-theme/img/product/details/thumb-1.jpg') }}" alt="">
@@ -177,6 +178,7 @@
                             <img data-imgbigurl="{{ asset('client-theme/img/product/details/product-details-4.jpg') }}"
                                 src="{{ asset('client-theme/img/product/details/thumb-4.jpg') }}" alt="">
                         </div> --}}
+
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -252,7 +254,7 @@
                             @endif
                         </div>
 
-                        <div class="product__details__price">${{ $product->price }}</div>
+                        <div class="product__details__price">${{ $product->price }}.00</div>
 
                         @if($product->availability >= 1)
 
@@ -452,8 +454,8 @@
                             </ul>
                         </div>
                         <div class="product__item__text">
-                            <h6><a href="#">{{ $item->product_name }}</a></h6>
-                            <h5>${{ $item->price }}</h5>
+                            <h6><a href="#">{{ Str::limit($item->product_name, 25) }}</a></h6>
+                            <h5>${{ $item->price }}.00</h5>
                         </div>
                     </div>
                 </div>

@@ -65,25 +65,26 @@ class PaymentController extends Controller
             DB::table('order_detail')->insert($order_detail);
             DB::table('fixed_order_detail')->insert($fixed);
             DB::table('reviews')->insert($review);
-
-            $mail_order = [
-                'user_name' => $request->name,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'note' => $request->note,
-                'order_id' => $order_id,
-                'products' => $item->name,
-                'quantity' => $item->qty,
-                'price' => $item->price,
-                'subtotal' => Cart::instance('cart')->subtotal(),
-                'total' => Cart::instance('cart')->total(),
-            ];
-
-            //Send order detail mail to customer
-            if(Mail::to($request->email)->send(new OrderDetail($mail_order))){
-            Cart::instance('cart')->destroy();
-            }
         }
+
+        $mail_order = [
+            'user_name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'note' => $request->note,
+            'order_id' => $order_id,
+            'products' => $item->name,
+            'quantity' => $item->qty,
+            'price' => $item->price,
+            'subtotal' => Cart::instance('cart')->subtotal(),
+            'total' => Cart::instance('cart')->total(),
+        ];
+
+        //Send order detail mail to customer
+        Mail::to($request->email)->send(new OrderDetail($mail_order));
+        
+        Cart::instance('cart')->destroy();
+
 
 
         //* VNPay application code
@@ -95,7 +96,7 @@ class PaymentController extends Controller
         $vnp_TxnRef = $order_id; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo = "VN Payment Demo";
         $vnp_OrderType = "Ogani E-Commerce";
-        $vnp_Amount = $data['total'] *1000;
+        $vnp_Amount = $data['total'] *100;
         $vnp_Locale = "VN";
         $vnp_BankCode = "NCB";
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -106,7 +107,7 @@ class PaymentController extends Controller
             "vnp_Amount" => $vnp_Amount,
             "vnp_Command" => "pay",
             "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
+            "vnp_CurrCode" => "USD",
             "vnp_IpAddr" => $vnp_IpAddr,
             "vnp_Locale" => $vnp_Locale,
             "vnp_OrderInfo" => $vnp_OrderInfo,

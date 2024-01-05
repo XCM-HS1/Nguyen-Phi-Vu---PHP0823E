@@ -9,6 +9,7 @@ use App\Models\Review;
 use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Routing\RedirectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,7 @@ class UserController extends Controller
 
     public function security(User $user)
     {
+        // dd($user);
         return view('client.profile.client-security', compact('user'));
     }
 
@@ -76,7 +78,7 @@ class UserController extends Controller
         }
 
         if($rating){
-            return redirect()->route('client.home')->with('success', 'You have successfully rated an item! Please return to rate another item!');
+            return redirect()->route('client.home')->with('success', 'You have successfully rated an item!');
         }
         else{
             return redirect()->route('client.home')->with('error', 'Something went wrong, please try again later!');
@@ -88,9 +90,10 @@ class UserController extends Controller
         // $id is order id
         $user_data = User::where('id', '=', Auth::user()->id)->get();
         $view_data = DB::table('reviews')->where('order_id', '=', $id)->where('product_id', '=', $product_id)->get();
+        $view_data_block = DB::table('reviews')->where('order_id', '=', $id)->where('product_id', '=', $product_id)->first();
         $fixed_data = DB::table('fixed_order_detail')->where('order_id', '=', $id)->where('product_id', '=', $product_id)->get();
 
-        return view('client.profile.client-rating-view', compact('user_data', 'view_data', 'fixed_data'));
+        return view('client.profile.client-rating-view', compact('user_data', 'view_data', 'fixed_data', 'view_data_block'));
     }
 
     public function orderDetail ($id)
@@ -108,26 +111,24 @@ class UserController extends Controller
                 $review_data = Review::where('user_id', '=', Auth::user()->id)->get();
             }
         }
-
-
-
         return view('client.profile.client-order-detail', compact('orders', 'order_detail', 'user_data', 'review_data', 'data1', 'data2'));
     }
 
     public function changePassword(Request $request, User $user)
     {
+        // dd($user);
         $currentPassword = Hash::check($request->current_password, Auth::user()->password);
         if(! $currentPassword)
         {
             // dd('Error 1 current password wrong');
-            return redirect()->route('user.security', $user->id)->with('error', 'Your current password is not match!');
+            return back()->with('error', 'Your current password is not match!');
         }
 
         $confirmPassword = $request->password == $request->password_confirm;
         if(! $confirmPassword)
         {
             // dd('Error 2 password !== confirm password');
-            return redirect()->route('user.security', $user->id)->with('error', 'Your have entered an unmachted new password!');
+            return back()->with('error', 'Your have entered an unmachted new password!');
         }
 
         $user_data['password'] = Hash::make($request->password);
@@ -147,6 +148,21 @@ class UserController extends Controller
     {
         $user = $request->only('email', 'name', 'phone_number');
         $user['password'] = Hash::make($request->password);
+
+        $NameCheck = DB::table('users')->where('name', $request->name)->exists();
+        if($NameCheck){
+            return redirect()->route('user.register')->with('error', 'Username already existed!');
+        }
+
+        $EmailCheck = DB::table('users')->where('email', $request->email)->exists();
+        if($EmailCheck){
+            return redirect()->route('user.register')->with('error', 'Email already existed! Try login with socialite!');
+        }
+
+        $PhoneCheck = DB::table('users')->where('phone_number', $request->phone_number)->exists();
+        if($PhoneCheck){
+            return redirect()->route('user.register')->with('error', 'Phone number already existed!');
+        }
 
         if($request->hasFile('user_avatar'))
         {
@@ -169,6 +185,11 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user_data = $request->only('name', 'email', 'address', 'phone_number');
+
+        $NameCheck = DB::table('users')->where('name', $request->name)->exists();
+        if($NameCheck){
+            return back()->with('error', 'Username already existed!');
+        }
 
         if($request->password)
         {

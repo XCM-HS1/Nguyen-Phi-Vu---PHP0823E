@@ -48,7 +48,11 @@
                         <div class="card-body">
                         <div class="d-flex align-items-start align-items-sm-center gap-4">
                                 <img
+                                @if($admin->avatar == null)
+                                src="{{ asset('admin-theme/assets/img/avatars/default-admin.png') }}"
+                                @else
                                 src="{{ asset('storage/' . $admin->avatar)}}"
+                                @endif
                                 alt="user-avatar"
                                 class="d-block rounded"
                                 height="100"

@@ -185,7 +185,7 @@
                                             <img src="{{ asset('storage/' . $item->image)}}" style="width: 100px">
                                         </div>
                                         <div class="blog__sidebar__recent__item__text">
-                                            <h6>{{ $item->title }}</h6>
+                                            <h6>{{ Str::limit($item->title, 25) }}</h6>
                                             <span>{{ $item->created_at->format('m/d/Y') }}</span>
                                         </div>
                                     </a>
@@ -209,7 +209,7 @@
                                         <li><i class="fa fa-calendar-o"></i> {{ $blog->created_at->format('m/d/Y') }}</li>
                                         {{-- <li><i class="fa fa-comment-o"></i> 5</li> --}}
                                     </ul>
-                                    <h5><a href="{{ route('client.blog-detail', ['slug' => $blog->slug]) }}">{{ $blog->title }}</a></h5>
+                                    <h5><a href="{{ route('client.blog-detail', ['slug' => $blog->slug]) }}">{{ Str::limit($blog->title, 75) }}</a></h5>
                                     <a href="{{ route('client.blog-detail', ['slug' => $blog->slug]) }}" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
                                 </div>
                             </div>

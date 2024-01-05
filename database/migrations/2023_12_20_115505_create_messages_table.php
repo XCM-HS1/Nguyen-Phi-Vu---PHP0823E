@@ -16,7 +16,7 @@ return new class extends Migration
             $table->smallInteger('status');
             $table->text('name');
             $table->text('email');
-            $table->string('phone')->unique();
+            $table->string('phone');
             $table->text('message');
             $table->timestamps();
         });

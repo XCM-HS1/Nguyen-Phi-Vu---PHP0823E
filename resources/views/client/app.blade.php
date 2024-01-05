@@ -96,12 +96,12 @@
                 <div class="categories__slider owl-carousel">
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{ asset('client-theme/img/categories/cat-1.jpg') }}">
-                            <h5><a href="#">Fresh Fruit</a></h5>
+                            <h5><a href="#">Fresh Food</a></h5>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{ asset('client-theme/img/categories/cat-2.jpg') }}">
-                            <h5><a href="#">Dried Fruit</a></h5>
+                            <h5><a href="#">Dried Seeds</a></h5>
                         </div>
                     </div>
                     <div class="col-lg-3">
@@ -111,12 +111,12 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{ asset('client-theme/img/categories/cat-4.jpg') }}">
-                            <h5><a href="#">drink fruits</a></h5>
+                            <h5><a href="#"> Drinks</a></h5>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{ asset('client-theme/img/categories/cat-5.jpg') }}">
-                            <h5><a href="#">drink fruits</a></h5>
+                            <h5><a href="#">Fresh Meats</a></h5>
                         </div>
                     </div>
                 </div>
@@ -163,8 +163,8 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ $product->product_name }}</a></h6>
-                            <h5>{{ $product->price }}</h5>
+                            <h6><a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}">{{ Str::limit($product->product_name, 50) }}</a></h6>
+                            <h5>${{ $product->price }}.00</h5>
                         </div>
                     </div>
                 </div>
@@ -212,8 +212,8 @@
                                         <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{ $product->product_name}}</h6>
-                                        <span>{{ $product->price}}</span>
+                                        <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                        <span>${{ $product->price}}.00</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -225,8 +225,8 @@
                                         <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{ $product->product_name}}</h6>
-                                        <span>{{ $product->price}}</span>
+                                        <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                        <span>${{ $product->price}}.00</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -246,8 +246,8 @@
                                         <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{ $product->product_name}}</h6>
-                                        <span>{{ $product->price}}</span>
+                                        <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                        <span>${{ $product->price}}.00</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -259,8 +259,8 @@
                                         <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{ $product->product_name}}</h6>
-                                        <span>{{ $product->price}}</span>
+                                        <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                        <span>${{ $product->price}}.00</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -280,8 +280,8 @@
                                         <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{ $product->product_name}}</h6>
-                                        <span>{{ $product->price}}</span>
+                                        <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                        <span>${{ $product->price}}.00</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -293,8 +293,8 @@
                                         <img src="{{ asset('storage/' . $product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{ $product->product_name}}</h6>
-                                        <span>{{ $product->price}}</span>
+                                        <h6>{{ Str::limit($product->product_name, 20) }}</h6>
+                                        <span>${{ $product->price}}.00</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -330,7 +330,7 @@
                                 <ul>
                                     <li><i class="fa fa-calendar-o"></i>{{ $blog->created_at }}</li>
                                 </ul>
-                                <h5><a href="{{ route('client.blog-detail', ['slug' => $blog->slug]) }}">{{ $blog->title }}</a></h5>
+                                <h5><a href="{{ route('client.blog-detail', ['slug' => $blog->slug]) }}">{{ Str::limit($blog->title, 50) }}</a></h5>
                                 {{-- <p>{{ $blog->content }}</p> --}}
                             </div>
                         </div>

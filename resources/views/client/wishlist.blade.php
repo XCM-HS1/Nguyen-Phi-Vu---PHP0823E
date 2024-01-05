@@ -79,12 +79,12 @@
                                         @foreach($products as $product)
                                         <a href="{{ route('client.product-detail', ['slug' => $product->slug]) }}" target="blank">
                                                 <img src="{{ asset('storage/' . $item->image)}}" style="width: 120px">
-                                            <h5>{{ $item->name }}</h5>
+                                            <h5>{{ Str::limit($item->product_name, 40) }}</h5>
                                         </a>
                                         @endforeach
                                     </td>
                                     <td class="shoping__cart__price">
-                                        ${{ $item->price }}
+                                        ${{ $item->price }}.00
                                     </td>
                                     <td class="shoping__cart__price">
                                         @if ($item->availability > 0)
@@ -125,7 +125,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a href="{{ route('client.shop') }}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
                         <a href="#" class="primary-btn cart-btn cart-btn-right" onclick="clearAll()">Clear All Items</a>
                     </div>
                 </div>

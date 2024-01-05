@@ -9,6 +9,8 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('admin-theme/assets/img/favicon/favicon.ico') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+
+    @include('admin.layouts.css')
 </head>
 <body>
     <section class="vh-100" style="background-color: rgb(69, 120, 50);">
@@ -50,7 +52,7 @@
 
                         {{-- <a class="small text-muted" href="#!">Forgot password?</a> --}}
                         <p class="mb-2 pb-lg-2" style="color: #393f81">
-                            Quick login with registered email!
+                            Login with socilaite!
                             @foreach(['google'] as $provider)
                             <a href="{{ route('social.login', ['provider' => $provider]) }}"><i class="fa-brands fa-xl fa-square-google-plus"></i></a>
                             @endforeach
@@ -71,5 +73,7 @@
           </div>
         </div>
       </section>
+      @include('admin.layouts.js')
 </body>
 </html>
+

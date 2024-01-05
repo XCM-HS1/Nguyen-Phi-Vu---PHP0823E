@@ -39,7 +39,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-money-bill"></i></span>
                                     <input type="number" class="form-control" value="{{ $product->price }}" readonly/>
-                                    <span class="input-group-text">.000₫</span>
+                                    <span class="input-group-text">$</span>
                                 </div>
                             </div>
                         </div>

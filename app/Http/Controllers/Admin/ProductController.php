@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use \Illuminate\Support\Str;
 use App\Models\Product;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -141,8 +142,8 @@ class ProductController extends Controller
         }
 
         $wishlist['availability'] = $request->availability;
-        if(! DB::table('wishlist')->where('product_id', '=', $id)->update($wishlist)){
-            return redirect()->route('admin.product.index')->with('error', "Cannot store data to table:'wishlist'!");
+        if(Cart::instance('wishlist')){
+            DB::table('wishlist')->where('product_id', '=', $id)->update($wishlist);
         }
 
         return redirect()->route('admin.product.index')->with('info', 'A product has been updated!');

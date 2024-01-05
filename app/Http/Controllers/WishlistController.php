@@ -54,7 +54,7 @@ class WishlistController extends Controller
         {
             $wishlist_item['user_id'] = Auth::user()->id;
             $wishlist_item['user_name'] = Auth::user()->name;
-            $wishlist_item['name'] = $item->name;
+            $wishlist_item['product_name'] = $item->name;
             $wishlist_item['product_id'] = $item->id;
             $wishlist_item['price'] = $item->price;
             $wishlist_item['availability'] = $item->options['availability'];

@@ -38,6 +38,7 @@ class ShopController extends Controller
     {
         $categories_data = Category::orderBy('category', 'DESC')->get();
         $aProducts = Product::orderBy('availability', 'DESC')->paginate(3);
+        $out_of_stock = Product::orderby('id', 'DESC')->where('availability', '=', 0)->paginate(6);
 
         $products = new Product();
         if($request->search){
@@ -46,7 +47,18 @@ class ShopController extends Controller
         }
         $products = $products->orderBy('id', 'DESC')->paginate(10);
 
-        return view('client.shop-grid', compact('products', 'categories_data', 'aProducts'));
+        if(Auth::user()){
+            $user_id = Auth::user()->id;
+            $wishlistAuth = DB::table('wishlist')->where('user_id', '=', $user_id)->get();
+            $user_data = User::where('id', '=', $user_id)->get();
+        }
+        else {
+            $user_id = "";
+            $wishlistAuth = "";
+            $user_data = "";
+        }
+
+        return view('client.shop-grid', compact('products', 'categories_data', 'aProducts', 'wishlistAuth', 'user_data', 'out_of_stock'));
     }
 
     public function detail ($slug)

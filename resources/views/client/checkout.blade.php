@@ -109,7 +109,7 @@
                                                 </div>
                                                 <div class="checkout__input">
                                                     <p>Address<span>*</span></p>
-                                                    <input type="text" placeholder="Full Address" class="checkout__input__add" name="address" value="{{ Auth::user()->address }}" />
+                                                    <input type="text" placeholder="Full Address" class="checkout__input__add" name="address" value="{{ Auth::user()->address }}" required/>
                                                 </div>
                                                 <div class="checkout__input">
                                                     <p>Notes</p>
@@ -128,11 +128,11 @@
                                                     <div class="checkout__order__products">Products <span>Total</span></div>
                                                     <ul>
                                                         @foreach($cartItems as $item)
-                                                        <li>{{ $item->name }} (x{{ $item->qty }})<span>{{ $item->subtotal() }}</span></li>
+                                                        <li>{{ Str::limit($item->name, 20) }} (x{{ $item->qty }})<span>${{ $item->subtotal() }}</span></li>
                                                         @endforeach
                                                     </ul>
-                                                    <div class="checkout__order__subtotal">Subtotal <span>{{ Cart::instance('cart')->subtotal() }}</span></div>
-                                                    <div class="checkout__order__total">Total <span>{{ Cart::instance('cart')->total() }} (+10% VAT)</span></div>
+                                                    <div class="checkout__order__subtotal">Subtotal <span>${{ Cart::instance('cart')->subtotal() }}</span></div>
+                                                    <div class="checkout__order__total">Total <span>${{ Cart::instance('cart')->total() }} (+10% VAT)</span></div>
 
                                                     <div class="checkout__input__checkbox">
                                                         <label for="agree">
@@ -183,7 +183,7 @@
                                                 </div>
                                                 <div class="checkout__input">
                                                     <p>Address<span>*</span></p>
-                                                    <input type="text" placeholder="Full Address" class="checkout__input__add" name="address" value="{{ Auth::user()->address }}" />
+                                                    <input type="text" placeholder="Full Address" class="checkout__input__add" name="address" value="{{ Auth::user()->address }}" required/>
                                                 </div>
                                                 <div class="checkout__input">
                                                     <p>Notes</p>
@@ -202,11 +202,11 @@
                                                     <div class="checkout__order__products">Products <span>Total</span></div>
                                                     <ul>
                                                         @foreach($cartItems as $item)
-                                                        <li>{{ $item->name }} (x{{ $item->qty }})<span>{{ $item->subtotal() }}</span></li>
+                                                        <li>{{ Str::limit($item->name, 20) }} (x{{ $item->qty }})<span>${{ $item->subtotal() }}</span></li>
                                                         @endforeach
                                                     </ul>
-                                                    <div class="checkout__order__subtotal">Subtotal <span>{{ Cart::instance('cart')->subtotal() }}</span></div>
-                                                    <div class="checkout__order__total">Total <span>{{ Cart::instance('cart')->total() }} (+10% VAT)</span></div>
+                                                    <div class="checkout__order__subtotal">Subtotal <span>${{ Cart::instance('cart')->subtotal() }}</span></div>
+                                                    <div class="checkout__order__total">Total <span>${{ Cart::instance('cart')->total() }} (+10% VAT)</span></div>
 
                                                     <div class="checkout__input__checkbox">
                                                         <label for="agree1">

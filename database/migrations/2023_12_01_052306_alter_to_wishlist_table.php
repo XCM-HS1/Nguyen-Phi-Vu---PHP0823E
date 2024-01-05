@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('wishlist', function (Blueprint $table) {
-            $table->text('image')->after('rowId');
-            $table->bigInteger('availability')->nullable()->after('price');
+            $table->string('image')->after('rowId');
+            $table->tinyInteger('availability')->nullable()->after('price');
         });
     }
 

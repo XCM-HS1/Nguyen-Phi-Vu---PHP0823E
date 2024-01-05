@@ -43,7 +43,7 @@
         <tr>
             <td style="width: 3rem"> {{ ++$key }} </td>
             <td style="width: 3rem"> {{ $item->id }} </td>
-            <td> {{ $item->product_name }} </td>
+            <td> {{ Str::limit($item->product_name, 25) }} </td>
             <td> <img src="{{ asset('storage/' . $item->image)}}" style="width: 100px"> </td>
             <td style="width: 3rem"> {{ $item->price }} </td>
             @if($item->availability == 0)

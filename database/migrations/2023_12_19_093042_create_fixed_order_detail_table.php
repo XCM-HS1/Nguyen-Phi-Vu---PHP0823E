@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('order_id');
             $table->bigInteger('product_id');
             $table->string('products');
-            $table->text('image');
+            $table->string('image');
             $table->bigInteger('quantity');
             $table->string('price');
             $table->timestamps();

@@ -76,10 +76,10 @@
                                 <tr>
                                     <td class="shoping__cart__item">
                                         <img src="{{ asset('storage/' . $item->options['image'])}}" style="width: 120px">
-                                        <h5>{{ $item->name }}</h5>
+                                        <h5>{{ Str::limit($item->name, 50) }}</h5>
                                     </td>
                                     <td class="shoping__cart__price">
-                                        {{ $item->price }}
+                                        ${{ $item->price }}.00
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
@@ -89,7 +89,7 @@
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        {{ $item->subtotal() }}
+                                        ${{ $item->subtotal() }}
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <span class="icon_close" onclick="removeItem('{{ $item->rowId }}')"></span>
@@ -119,8 +119,9 @@
                         <a href="#" class="primary-btn cart-btn cart-btn-right" onclick="clearCart()">Clear All Items</a>
                     </div>
                 </div>
+
                 <div class="col-lg-6">
-                    <div class="shoping__continue">
+                    {{-- <div class="shoping__continue">
                         <div class="shoping__discount">
                             <h5>Discount Codes</h5>
                             <form action="#">
@@ -128,8 +129,9 @@
                                 <button type="submit" class="site-btn">APPLY COUPON</button>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
+
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>

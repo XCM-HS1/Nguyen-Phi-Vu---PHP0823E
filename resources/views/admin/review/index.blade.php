@@ -39,7 +39,7 @@
             <td style="width: 3rem"> {{ ++$key }} </td>
             <td style="width: 3rem"> {{$item->order_id}} </td>
             <td > {{ $item->user_name }} </td>
-            <td> {{$item->product_name}} </td>
+            <td> {{Str::limit($item->product_name, 50)}} </td>
             <td> {{Str::limit($item->review, 50)}} </td>
             @if ($item->status == 0)
                 <td><span class="badge bg-primary"> Not Rated </span></td>
